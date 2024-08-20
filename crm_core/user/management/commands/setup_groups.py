@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Set up initial user groups and permissions'
+    help = 'Set up initial user groups and permissions'  # noqa
 
     def handle(self, *args, **kwargs):
         # Create groups

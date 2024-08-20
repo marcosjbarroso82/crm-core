@@ -12,5 +12,5 @@ def api_client():
     return APIClient()
 
 
-from crm_core.customer.tests.fixtures import *
-from crm_core.user.tests.fixtures import *
+from crm_core.customer.tests.fixtures import *  # noqa
+from crm_core.user.tests.fixtures import *  # noqa

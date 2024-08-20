@@ -6,4 +6,4 @@ class CustomerConfig(AppConfig):
     name = 'crm_core.customer'
 
     def ready(self):
-        import crm_core.customer.signals
+        import crm_core.customer.signals  # noqa

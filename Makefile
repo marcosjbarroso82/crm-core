@@ -11,6 +11,9 @@ lint:
 	poetry run pre-commit run --all-files
 
 
+.PHONY: flush
+flush:
+	poetry run python -m crm_core.manage flush
 
 .PHONY: migrate
 migrate:

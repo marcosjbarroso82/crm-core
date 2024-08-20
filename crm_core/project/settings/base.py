@@ -26,15 +26,14 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     # 'debug_toolbar',
-    # 'storages',
+    'drf_spectacular',
 
     # Apps
-    # 'crm_core.accounts.apps.AccountsConfig',
-    # 'crm_core.blocks.apps.BlocksConfig',
-    # 'crm_core.comments.apps.CommentsConfig',
-    # 'crm_core.config.apps.SettingsConfig',
-    # 'crm_core.recipes.apps.RecipesConfig',
+    'crm_core.user.apps.UserConfig',
+    'crm_core.customer.apps.CustomerConfig',
 ]
+
+AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

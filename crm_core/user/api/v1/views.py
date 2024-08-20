@@ -1,7 +1,6 @@
-
-from crm_core.user import models
 from rest_framework.viewsets import ModelViewSet
 
+from crm_core.user import models
 from crm_core.user.api.v1.serializers import UserSerializer
 
 

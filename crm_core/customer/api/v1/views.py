@@ -1,10 +1,10 @@
-from crm_core.customer import models
-from rest_framework.viewsets import ModelViewSet
 from django.http import FileResponse
-
-from crm_core.customer.api.v1.serializers import CustomerSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+
+from crm_core.customer import models
+from crm_core.customer.api.v1.serializers import CustomerSerializer
 
 
 class CustomerViewSet(ModelViewSet):
@@ -18,7 +18,7 @@ class CustomerViewSet(ModelViewSet):
             customer_photo = customer.photo
         except models.CustomerPhoto.DoesNotExist:
             customer_photo = None
-        
+
         if request.method == 'GET':
             if customer_photo and customer_photo.photo:
                 return FileResponse(customer_photo.photo, content_type='image/jpeg')
@@ -36,18 +36,15 @@ class CustomerViewSet(ModelViewSet):
                 customer_photo.delete()
 
             customer_photo = models.CustomerPhoto(
-                customer=customer,
-                photo=request.FILES['photo'],
-                created_by=request.user,
-                updated_by=request.user
+                customer=customer, photo=request.FILES['photo'], created_by=request.user, updated_by=request.user
             )
             customer_photo.save()
 
-            return Response(status=201)
-        
+            return Response(status=200)
+
         if request.method == 'DELETE':
             if customer_photo:
                 customer_photo.delete()
-                return Response(status=204)
+                return Response(status=200)
             else:
                 return Response(status=404)

@@ -1,7 +1,8 @@
-from django.core.management.base import BaseCommand
+from apps.customer.models import Customer
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from apps.customer.models import Customer
+from django.core.management.base import BaseCommand
+
 
 class Command(BaseCommand):
     help = 'Set up initial user groups and permissions'

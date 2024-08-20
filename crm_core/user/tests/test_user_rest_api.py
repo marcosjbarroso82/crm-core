@@ -1,8 +1,7 @@
 import pytest
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from crm_core.user.tests.fixtures.users import staff_user, regular_user
-
+from crm_core.user.tests.fixtures.users import regular_user, staff_user
 
 
 @pytest.mark.django_db
@@ -11,9 +10,10 @@ def test_regular_user_cannot_access_users_endpoint(regular_user, api_client):
     refresh = RefreshToken.for_user(regular_user)
     access_token = str(refresh.access_token)
     headers = {'Authorization': f'Bearer {access_token}'}
-    
+
     response = api_client.get('/api/v1/users/', headers=headers)
     assert response.status_code == 403
+
 
 @pytest.mark.django_db
 def test_staff_user_can_access_users_endpoint(staff_user, api_client):

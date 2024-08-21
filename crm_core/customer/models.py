@@ -16,8 +16,22 @@ class Customer(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
-    created_by = models.ForeignKey('user.User', editable=False, blank=True, null=True, on_delete=models.SET_NULL, related_name='created_customers')
-    updated_by = models.ForeignKey('user.User', editable=False, blank=True, null=True, on_delete=models.SET_NULL, related_name='updated_customers')
+    created_by = models.ForeignKey(
+        'user.User',
+        editable=False,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='created_customers'
+    )
+    updated_by = models.ForeignKey(
+        'user.User',
+        editable=False,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='updated_customers'
+    )
 
     customer_id = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)

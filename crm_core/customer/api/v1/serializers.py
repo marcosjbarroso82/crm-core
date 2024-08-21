@@ -11,8 +11,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "email"]
 
 
-
-
 class CustomerSerializer(serializers.ModelSerializer):
 
     created_by = UserSerializer()
@@ -25,11 +23,11 @@ class CustomerSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         request = self.context.get('request')
-        
+
         if instance.photo:
             full_photo_url = request.build_absolute_uri(f'/api/v1/customers/{instance.uuid}/photo/')
             representation['photo'] = full_photo_url
         else:
             representation['photo'] = None
-        
+
         return representation

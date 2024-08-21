@@ -11,6 +11,12 @@ class CustomerViewSet(ModelViewSet):
     queryset = models.Customer.objects.all()
     serializer_class = CustomerSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user, updated_by=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+
     @action(detail=True, methods=['get', 'post', 'delete'], url_path='photo')
     def photo(self, request, pk=None):
         customer = self.get_object()
@@ -21,6 +27,8 @@ class CustomerViewSet(ModelViewSet):
 
         if request.method == 'GET':
             if customer_photo and customer_photo.photo:
+                customer.created_by = self.request.user
+                customer.save(update_fields=['created_by'])
                 return FileResponse(customer_photo.photo, content_type='image/jpeg')
             else:
                 return Response(status=404)
@@ -35,16 +43,18 @@ class CustomerViewSet(ModelViewSet):
             if customer_photo:
                 customer_photo.delete()
 
-            customer_photo = models.CustomerPhoto(
-                customer=customer, photo=request.FILES['photo'], created_by=request.user, updated_by=request.user
-            )
+            customer.created_by = self.request.user
+            customer.save(update_fields=['created_by'])
+            # Save the new photo
+            customer_photo = models.CustomerPhoto(customer=customer, photo=request.FILES['photo'])
             customer_photo.save()
-
-            return Response(status=200)
+            return Response(status=201)
 
         if request.method == 'DELETE':
             if customer_photo:
                 customer_photo.delete()
-                return Response(status=200)
+                customer.created_by = self.request.user
+                customer.save(update_fields=['created_by'])
+                return Response(status=204)
             else:
                 return Response(status=404)

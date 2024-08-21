@@ -14,10 +14,11 @@ def customer_photo_upload_to(instance, filename):
 
 class Customer(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='created_customers')
-    updated_by = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='updated_customers')
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    created_by = models.ForeignKey('user.User', editable=False, blank=True, null=True, on_delete=models.SET_NULL, related_name='created_customers')
+    updated_by = models.ForeignKey('user.User', editable=False, blank=True, null=True, on_delete=models.SET_NULL, related_name='updated_customers')
+
     customer_id = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
@@ -39,7 +40,3 @@ def validate_photo(photo):
 class CustomerPhoto(models.Model):
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE, related_name='photo')
     photo = models.ImageField(upload_to=customer_photo_upload_to)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='created_customer_photos')
-    updated_by = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='updated_customer_photos')

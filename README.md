@@ -31,6 +31,7 @@ make test
 ### Running the project from inside the container
 From inside the container, run the following command to run the project:
 ```bash
+make migrate
 make run-server
 ```
 

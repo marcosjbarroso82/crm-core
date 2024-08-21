@@ -13,14 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
 
-
     created_by = UserSerializer()
     updated_by = UserSerializer()
 
     class Meta:
         model = models.Customer
         fields = "__all__"
-
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -33,4 +31,3 @@ class CustomerSerializer(serializers.ModelSerializer):
             representation['photo'] = None
 
         return representation
-

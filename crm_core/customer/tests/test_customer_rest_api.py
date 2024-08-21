@@ -32,7 +32,6 @@ def test_staff_user_can_add_photo_to_customer_without_photo(staff_user, api_clie
     # Assert the response status code
     assert response.status_code == 201, f"Expected status code 201, got {response.status_code}"
 
-
     # Refresh the customer instance and assert the photo was added
     customer.refresh_from_db()
     assert customer.photo, "Customer photo was not added"
@@ -57,7 +56,6 @@ def test_staff_user_can_update_customer_photo(staff_user, api_client, customer_w
     assert response.status_code == 201
 
 
-
 @pytest.mark.django_db
 def test_staff_user_can_delete_customer_photo(staff_user, api_client, customer_with_photo):
     # Generate a JWT token for the staff_user
@@ -70,7 +68,6 @@ def test_staff_user_can_delete_customer_photo(staff_user, api_client, customer_w
 
     # Check the response status code
     assert response.status_code == 204
-
 
     # Verify that the photo was removed from the customer
     customer_with_photo.refresh_from_db()

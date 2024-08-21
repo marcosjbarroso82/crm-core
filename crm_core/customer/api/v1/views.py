@@ -18,6 +18,7 @@ class CustomerViewSet(ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
 
+        
     @action(detail=True, methods=['get', 'post', 'delete'], url_path='photo')
     def photo(self, request, pk=None):
         customer = self.get_object()
@@ -28,8 +29,10 @@ class CustomerViewSet(ModelViewSet):
 
         if request.method == 'GET':
             if customer_photo and customer_photo.photo:
+
                 customer.created_by = self.request.user
                 customer.save(update_fields=['created_by'])
+
                 return FileResponse(customer_photo.photo, content_type='image/jpeg')
             else:
                 return Response(status=404)
@@ -51,11 +54,14 @@ class CustomerViewSet(ModelViewSet):
             customer_photo.save()
             return Response(status=201)
 
+
         if request.method == 'DELETE':
             if customer_photo:
                 customer_photo.delete()
+
                 customer.created_by = self.request.user
                 customer.save(update_fields=['created_by'])
                 return Response(status=204)
+
             else:
                 return Response(status=404)

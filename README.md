@@ -42,6 +42,10 @@ make link
 make test
 ```
 
-
+## Commands
+The project has a Makefile with some useful commands. To see all the commands available, run the following command:
+```bash
+make help
+```
 
 

@@ -11,6 +11,7 @@ mkdir -p local
 cp crm_core/project/settings/templates/settings.dev.py ./local/settings.dev.py
 cp crm_core/project/settings/templates/settings.unittests.py ./local/settings.unittests.py
 
+
 ```
 
 To start the development server run the following command:
@@ -42,6 +43,10 @@ make link
 make test
 ```
 
-
+## Commands
+The project has a Makefile with some useful commands. To see all the commands available, run the following command:
+```bash
+make help
+```
 
 

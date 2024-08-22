@@ -31,8 +31,10 @@ class CustomerViewSet(ModelViewSet):
 
         if request.method == 'GET':
             if customer_photo and customer_photo.photo:
+
                 customer.updated_by = self.request.user
                 customer.save(update_fields=['updated_by'])
+
                 return FileResponse(customer_photo.photo, content_type='image/jpeg')
             else:
                 return Response(status=404)

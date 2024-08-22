@@ -43,11 +43,6 @@ class CustomerViewSet(ModelViewSet):
             if file_size > limit_kb * 1024:
                 return Response({"error": "Max size of file is %s KB" % limit_kb}, status=400)
 
-            # Validate file extension
-            file_extension = os.path.splitext(file.name)[1].lower()
-            if file_extension != '.jpeg':
-                return Response({'error': 'Invalid file format. Only JPEG is allowed.'}, status=400)
-
             if customer_photo:
                 customer_photo.delete()
 

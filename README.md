@@ -32,6 +32,7 @@ make test
 ### Running the project from inside the container
 From inside the container, run the following command to run the project:
 ```bash
+make migrate
 make run-server
 ```
 
@@ -39,7 +40,7 @@ make run-server
 The project is configured to run the tests and check linting before merging a PR. The CI/CD is configured using Github Actions.
 To check if your code matches the requirements, run the following command:
 ```bash
-make link
+make lint
 make test
 ```
 

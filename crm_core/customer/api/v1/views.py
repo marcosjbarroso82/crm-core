@@ -29,8 +29,8 @@ class CustomerViewSet(ModelViewSet):
         if request.method == 'GET':
             if customer_photo and customer_photo.photo:
 
-                customer.created_by = self.request.user
-                customer.save(update_fields=['created_by'])
+                customer.updated_by = self.request.user
+                customer.save(update_fields=['updated_by'])
 
                 return FileResponse(customer_photo.photo, content_type='image/jpeg')
             else:
@@ -46,8 +46,8 @@ class CustomerViewSet(ModelViewSet):
             if customer_photo:
                 customer_photo.delete()
 
-            customer.created_by = self.request.user
-            customer.save(update_fields=['created_by'])
+            customer.updated_by = self.request.user
+            customer.save(update_fields=['updated_by'])
             # Save the new photo
             customer_photo = models.CustomerPhoto(customer=customer, photo=request.FILES['photo'])
             customer_photo.save()
@@ -57,8 +57,8 @@ class CustomerViewSet(ModelViewSet):
             if customer_photo:
                 customer_photo.delete()
 
-                customer.created_by = self.request.user
-                customer.save(update_fields=['created_by'])
+                customer.updated_by = self.request.user
+                customer.save(update_fields=['updated_by'])
                 return Response(status=204)
 
             else:

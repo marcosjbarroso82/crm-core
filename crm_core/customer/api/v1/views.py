@@ -12,6 +12,7 @@ from crm_core.customer.api.v1.serializers import CustomerSerializer
 class CustomerViewSet(ModelViewSet):
     queryset = models.Customer.objects.all()
     serializer_class = CustomerSerializer
+    filterset_fields = ['customer_id', 'name', 'status']
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user, updated_by=self.request.user)

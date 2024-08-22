@@ -1,3 +1,4 @@
+import os
 from django.http import FileResponse
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.decorators import action
@@ -28,20 +29,24 @@ class CustomerViewSet(ModelViewSet):
 
         if request.method == 'GET':
             if customer_photo and customer_photo.photo:
-
                 customer.updated_by = self.request.user
                 customer.save(update_fields=['updated_by'])
-
                 return FileResponse(customer_photo.photo, content_type='image/jpeg')
             else:
                 return Response(status=404)
 
         if request.method == 'POST':
             # Validate photo size
-            file_size = request.FILES['photo'].size
+            file = request.FILES['photo']
+            file_size = file.size
             limit_kb = 500
             if file_size > limit_kb * 1024:
                 return Response({"error": "Max size of file is %s KB" % limit_kb}, status=400)
+
+            # Validate file extension
+            file_extension = os.path.splitext(file.name)[1].lower()
+            if file_extension != '.jpeg':
+                return Response({'error': 'Invalid file format. Only JPEG is allowed.'}, status=400)
 
             if customer_photo:
                 customer_photo.delete()
@@ -49,7 +54,7 @@ class CustomerViewSet(ModelViewSet):
             customer.updated_by = self.request.user
             customer.save(update_fields=['updated_by'])
             # Save the new photo
-            customer_photo = models.CustomerPhoto(customer=customer, photo=request.FILES['photo'])
+            customer_photo = models.CustomerPhoto(customer=customer, photo=file)
             customer_photo.save()
             return Response(status=201)
 

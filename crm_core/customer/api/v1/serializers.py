@@ -13,21 +13,23 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
 
-    created_by = UserSerializer()
-    updated_by = UserSerializer()
+    created_by = UserSerializer(read_only=True)
+    updated_by = UserSerializer(read_only=True)
 
     class Meta:
         model = models.Customer
         fields = "__all__"
+        read_only_fields = ('created_by', 'updated_by')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         request = self.context.get('request')
 
-        if instance.photo:
+        try:
             full_photo_url = request.build_absolute_uri(f'/api/v1/customers/{instance.uuid}/photo/')
-            representation['photo'] = full_photo_url
-        else:
-            representation['photo'] = None
+        except models.CustomerPhoto.DoesNotExist:
+            full_photo_url = None
+
+        representation['photo'] = full_photo_url
 
         return representation

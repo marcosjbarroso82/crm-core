@@ -26,8 +26,13 @@ class CustomerSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         try:
-            full_photo_url = request.build_absolute_uri(f'/api/v1/customers/{instance.uuid}/photo/')
+            photo = instance.photo.photo
         except models.CustomerPhoto.DoesNotExist:
+            photo = None        
+
+        if photo:
+            full_photo_url = request.build_absolute_uri(f'/api/v1/customers/{instance.uuid}/photo/')
+        else:
             full_photo_url = None
 
         representation['photo'] = full_photo_url

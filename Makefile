@@ -1,3 +1,23 @@
+.PHONY: help
+help:
+	@echo "install - install dependencies"
+	@echo "install-pre-commit - install pre-commit hooks"
+	@echo "lint - run pre-commit hooks"
+	@echo "flush - flush database"
+	@echo "migrate - apply migrations"
+	@echo "migrations - create migrations"
+	@echo "run-server - run development server"
+	@echo "shell - run shell"
+	@echo "superuser - create superuser"
+	@echo "test - run tests"
+	@echo "up-dependencies-only - start only dependencies"
+	@echo "update - install dependencies, apply migrations, install pre-commit hooks"
+	@echo "run-docker-dev-bash - run bash in docker container"
+	@echo "prune-docker - remove unused containers, networks, images, and volumes"
+	@echo "stop-docker - stop all docker containers"
+	@echo "remove-docker-dev-volumes - remove postgresql-data from docker-compose.dev.yml"
+
+
 .PHONY: install
 install:
 	poetry install

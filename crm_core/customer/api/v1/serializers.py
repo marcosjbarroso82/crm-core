@@ -28,7 +28,7 @@ class CustomerSerializer(serializers.ModelSerializer):
         try:
             photo = instance.photo.photo
         except models.CustomerPhoto.DoesNotExist:
-            photo = None        
+            photo = None
 
         if photo:
             full_photo_url = request.build_absolute_uri(f'/api/v1/customers/{instance.uuid}/photo/')

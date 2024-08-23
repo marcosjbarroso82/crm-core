@@ -1,3 +1,5 @@
+import os
+
 from django.http import FileResponse
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.decorators import action
@@ -11,6 +13,7 @@ from crm_core.customer.api.v1.serializers import CustomerSerializer
 class CustomerViewSet(ModelViewSet):
     queryset = models.Customer.objects.all()
     serializer_class = CustomerSerializer
+    filterset_fields = ['customer_id', 'name', 'status']
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user, updated_by=self.request.user)
@@ -38,7 +41,8 @@ class CustomerViewSet(ModelViewSet):
 
         if request.method == 'POST':
             # Validate photo size
-            file_size = request.FILES['photo'].size
+            file = request.FILES['photo']
+            file_size = file.size
             limit_kb = 500
             if file_size > limit_kb * 1024:
                 return Response({"error": "Max size of file is %s KB" % limit_kb}, status=400)
@@ -49,7 +53,7 @@ class CustomerViewSet(ModelViewSet):
             customer.updated_by = self.request.user
             customer.save(update_fields=['updated_by'])
             # Save the new photo
-            customer_photo = models.CustomerPhoto(customer=customer, photo=request.FILES['photo'])
+            customer_photo = models.CustomerPhoto(customer=customer, photo=file)
             customer_photo.save()
             return Response(status=201)
 

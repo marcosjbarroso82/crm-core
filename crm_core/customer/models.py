@@ -7,9 +7,7 @@ from django.db import models
 
 def customer_photo_upload_to(instance, filename):
     # Use the instance's UUID as the filename
-    return os.path.join(
-        'protected_media', 'customer', 'profile_photo', f"{instance.customer.uuid}.jpg"
-    )  # TODO: Change the extension to the uploaded file's extension
+    return os.path.join('protected_media', 'customer', 'profile_photo', f"{instance.customer.uuid}.jpg")
 
 
 class Customer(models.Model):

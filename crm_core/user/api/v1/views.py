@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAdminUser
 
 from crm_core.user import models
 from crm_core.user.api.v1.serializers import UserSerializer
@@ -12,6 +13,7 @@ class UserViewSet(ModelViewSet):
     queryset = models.User.objects.all()
     serializer_class = UserSerializer
     filterset_fields = ["username", "email", "first_name", "last_name"]
+    permission_classes = [IsAdminUser]
 
     @action(detail=True, methods=['post'], url_path='set-password')
     def set_password(self, request, pk=None):

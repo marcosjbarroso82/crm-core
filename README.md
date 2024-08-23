@@ -33,8 +33,12 @@ make test
 From inside the container, run the following command to run the project:
 ```bash
 make migrate
+make superuser
 make run-server
 ```
+
+### Using Examples in Postman Collection
+A postman collection can be found in the folder `dev_tools` import that collection. In the environment variables, set `username` and `password` with the credentials of the superuser. You can use that user to create others and then change the credentials again.
 
 ### CI/CD
 The project is configured to run the tests and check linting before merging a PR. The CI/CD is configured using Github Actions.

@@ -1,13 +1,12 @@
-import os
-
 from django.http import FileResponse
-from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from crm_core.customer import models
 from crm_core.customer.api.v1.serializers import CustomerSerializer
+
+from .schema_extensions import customer_photo_delete_schema, customer_photo_get_schema, customer_photo_post_schema
 
 
 class CustomerViewSet(ModelViewSet):
@@ -21,6 +20,9 @@ class CustomerViewSet(ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
 
+    @customer_photo_get_schema
+    @customer_photo_post_schema
+    @customer_photo_delete_schema
     @action(detail=True, methods=['get', 'post', 'delete'], url_path='photo')
     def photo(self, request, pk=None):
         customer = self.get_object()
@@ -41,7 +43,10 @@ class CustomerViewSet(ModelViewSet):
 
         if request.method == 'POST':
             # Validate photo size
-            file = request.FILES['photo']
+            try:
+                file = request.FILES['photo']
+            except KeyError:
+                return Response({'error': 'photo is required'}, status=400)
             file_size = file.size
             limit_kb = 500
             if file_size > limit_kb * 1024:
@@ -55,7 +60,7 @@ class CustomerViewSet(ModelViewSet):
             # Save the new photo
             customer_photo = models.CustomerPhoto(customer=customer, photo=file)
             customer_photo.save()
-            return Response(status=201)
+            return Response({'message': 'success'}, status=201)
 
         if request.method == 'DELETE':
             if customer_photo:

@@ -39,6 +39,7 @@ make run-server
 
 ### Using Examples in Postman Collection
 A postman collection can be found in the folder `dev_tools` import that collection. In the environment variables, set `username` and `password` with the credentials of the superuser. You can use that user to create others and then change the credentials again.
+Also, the collection can be found at [Postman Collection](https://universal-satellite-262876.postman.co/workspace/Monkey-CRM~bb32f883-6307-4118-b291-bec934cde3ec/collection/872186-e8f0e227-6613-4da6-9625-ae8e1ab9a59e?action=share&creator=872186&active-environment=872186-b479e34d-d399-454e-8e84-e7c1c2bb76f2)
 
 ### CI/CD
 The project is configured to run the tests and check linting before merging a PR. The CI/CD is configured using Github Actions.

@@ -1,10 +1,13 @@
+import shutil
+import tempfile
+
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import override_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from crm_core.customer.models import Customer
 from crm_core.customer.tests.fixtures.customers import customer, customer_photo, customer_with_photo
-from crm_core.user.tests.fixtures.users import regular_user, staff_user
 
 # Constants
 PHOTO_FILENAME = 'test_photo.jpg'
@@ -12,8 +15,17 @@ PHOTO_CONTENT = b'test photo content'
 PHOTO_CONTENT_TYPE = 'image/jpeg'
 
 
+@pytest.fixture(scope='function')
+def temp_media_root():
+    temp_dir = tempfile.mkdtemp()
+    with override_settings(MEDIA_ROOT=temp_dir):
+        yield temp_dir
+    shutil.rmtree(temp_dir)
+
+
 @pytest.mark.django_db
-def test_staff_user_can_add_photo_to_customer_without_photo(staff_user, api_client, customer):
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+def test_staff_user_can_add_photo_to_customer_without_photo(staff_user, api_client, customer, temp_media_root):
     """
     Test that a staff user can add a photo to a customer without a photo.
     """
@@ -38,7 +50,8 @@ def test_staff_user_can_add_photo_to_customer_without_photo(staff_user, api_clie
 
 
 @pytest.mark.django_db
-def test_staff_user_can_update_customer_photo(staff_user, api_client, customer_with_photo):
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+def test_staff_user_can_update_customer_photo(staff_user, api_client, customer_with_photo, temp_media_root):
     # Generate a JWT token for the staff_user
     refresh = RefreshToken.for_user(staff_user)
     access_token = str(refresh.access_token)
@@ -57,7 +70,8 @@ def test_staff_user_can_update_customer_photo(staff_user, api_client, customer_w
 
 
 @pytest.mark.django_db
-def test_staff_user_can_delete_customer_photo(staff_user, api_client, customer_with_photo):
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+def test_staff_user_can_delete_customer_photo(staff_user, api_client, customer_with_photo, temp_media_root):
     # Generate a JWT token for the staff_user
     refresh = RefreshToken.for_user(staff_user)
     access_token = str(refresh.access_token)

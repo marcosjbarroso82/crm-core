@@ -1,8 +1,6 @@
 import pytest
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from crm_core.user.tests.fixtures.users import regular_user, staff_user
-
 
 @pytest.mark.django_db
 def test_regular_user_cannot_access_users_endpoint(regular_user, api_client):

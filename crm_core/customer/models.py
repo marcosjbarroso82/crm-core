@@ -1,8 +1,11 @@
 import os
 import uuid
+from io import BytesIO
 
 from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
 from django.db import models
+from PIL import Image
 
 
 def customer_photo_upload_to(instance, filename):
